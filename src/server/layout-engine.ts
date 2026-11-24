@@ -483,7 +483,6 @@ function elkOptionsForStrategy(
         'elk.layered.spacing.edgeEdgeBetweenLayers': String(sp.edgeEdge),
         'elk.layered.crossingMinimization.strategy': 'LAYER_SWEEP',
         'elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
-        'elk.layered.considerModelOrder.strategy': 'NODES_AND_EDGES',
       };
     case 'box':
       return {
@@ -518,7 +517,6 @@ function elkOptionsForStrategy(
         'elk.layered.spacing.edgeEdgeBetweenLayers': String(sp.edgeEdge),
         'elk.layered.crossingMinimization.strategy': 'LAYER_SWEEP',
         'elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
-        'elk.layered.considerModelOrder.strategy': 'NODES_AND_EDGES',
       };
   }
 }
@@ -556,14 +554,11 @@ export async function computeDiagramLayout(spec: DiagramSpec): Promise<LayoutRes
 
   for (const g of groupSpecs) {
     const groupLayout = g.layout ?? (spec.layout === 'box' ? 'box' : spec.layout);
-    const titleMinW = measureLineWidth(g.label, 15) + 48;
     const gNode: ElkNode = {
       id: g.id,
       children: [],
       layoutOptions: {
         ...elkOptionsForStrategy(groupLayout, sp),
-        'elk.nodeSize.constraints': 'MINIMUM_SIZE',
-        'elk.nodeSize.minimum': `(${titleMinW}, 90)`,
       },
     };
     elkNodeMap.set(g.id, gNode);
