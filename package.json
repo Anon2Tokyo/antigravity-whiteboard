@@ -1,0 +1,33 @@
+{
+  "name": "antigravity-whiteboard",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "AI-drawable Excalidraw whiteboard MCP App plugin for Google Antigravity with multi-layout ELK.js engine and precision box-selection editing.",
+  "license": "MIT",
+  "scripts": {
+    "build:ui": "node scripts/build-ui.mjs",
+    "build:server": "node scripts/build-server.mjs",
+    "build": "npm run build:ui && npm run build:server",
+    "install-plugin": "npm run build && node scripts/install-plugin.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --no-warnings scripts/smoke-test.mjs"
+  },
+  "dependencies": {
+    "@excalidraw/excalidraw": "^0.18.1",
+    "@modelcontextprotocol/ext-apps": "^1.0.1",
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "elkjs": "^0.12.1",
+    "lucide-react": "^0.511.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.29",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "esbuild": "^0.25.5",
+    "typescript": "^5.8.3"
+  }
+}

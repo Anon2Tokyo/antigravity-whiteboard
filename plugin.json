@@ -1,0 +1,18 @@
+{
+  "name": "antigravity-whiteboard",
+  "displayName": "Whiteboard",
+  "version": "0.1.0",
+  "description": "AI-drawable Excalidraw whiteboard in Antigravity's left and right sidebars with multi-layout ELK.js anti-overlap engine and precision box-selection local editing.",
+  "logo": "assets/logo.svg",
+  "author": {
+    "name": "Anon2Tokyo",
+    "url": "https://github.com/Anon2Tokyo"
+  },
+  "homepage": "https://github.com/Anon2Tokyo/antigravity-whiteboard",
+  "repository": "https://github.com/Anon2Tokyo/antigravity-whiteboard",
+  "suggestedPrompts": [
+    "Draw a layered system architecture diagram of this project on the whiteboard",
+    "Draw a left-to-right data flow diagram showing how requests travel through the app",
+    "Open the whiteboard and map out the main modules as a nested module blueprint"
+  ]
+}
