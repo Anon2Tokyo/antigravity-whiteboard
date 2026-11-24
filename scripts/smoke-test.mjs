@@ -56,6 +56,7 @@ function assertNoNodeOverlaps(elements, label) {
   const nodeRects = elements
     .filter((e) => !e.isDeleted && e.customData?.role === 'node')
     .map((e) => ({ id: e.id, x: e.x, y: e.y, w: e.width, h: e.height }));
+  const nodeMap = new Map(nodeRects.map((n) => [n.id, n]));
 
   for (let i = 0; i < nodeRects.length; i++) {
     for (let j = i + 1; j < nodeRects.length; j++) {
@@ -67,6 +68,34 @@ function assertNoNodeOverlaps(elements, label) {
         !(overlapX > 0.5 && overlapY > 0.5),
         `[${label}] Overlap detected between ${a.id} (${a.x},${a.y},${a.w}x${a.h}) and ${b.id} (${b.x},${b.y},${b.w}x${b.h})`,
       );
+    }
+  }
+
+  // Verify every non-sequence arrow's start & end points actually touch their source & target nodes
+  if (label !== 'sequence') {
+    const arrows = elements.filter((e) => !e.isDeleted && e.type === 'arrow');
+    for (const arr of arrows) {
+      const fromId = arr.startBinding?.elementId;
+      const toId = arr.endBinding?.elementId;
+      if (!fromId || !toId || !Array.isArray(arr.points) || arr.points.length < 2) continue;
+      const fromNode = nodeMap.get(fromId);
+      const toNode = nodeMap.get(toId);
+      if (!fromNode || !toNode) continue;
+
+      const pStart = { x: arr.x + arr.points[0][0], y: arr.y + arr.points[0][1] };
+      const last = arr.points[arr.points.length - 1];
+      const pEnd = { x: arr.x + last[0], y: arr.y + last[1] };
+
+      const distToRect = (p, r) => {
+        const dx = Math.max(r.x - p.x, 0, p.x - (r.x + r.w));
+        const dy = Math.max(r.y - p.y, 0, p.y - (r.y + r.h));
+        return Math.hypot(dx, dy);
+      };
+
+      const dStart = distToRect(pStart, fromNode);
+      const dEnd = distToRect(pEnd, toNode);
+      assert.ok(dStart <= 12, `[${label}] Arrow ${arr.id} start (${pStart.x},${pStart.y}) is ${dStart.toFixed(1)}px away from ${fromId}`);
+      assert.ok(dEnd <= 12, `[${label}] Arrow ${arr.id} end (${pEnd.x},${pEnd.y}) is ${dEnd.toFixed(1)}px away from ${toId}`);
     }
   }
 }

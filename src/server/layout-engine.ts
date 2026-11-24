@@ -707,11 +707,13 @@ export async function computeDiagramLayout(spec: DiagramSpec): Promise<LayoutRes
   const extractedEdgeIds = new Set<string>();
 
   const collectEdges = (container: ElkNode) => {
-    const baseOffset = containerOffsetMap.get(container.id) ?? { x: 0, y: 0 };
     for (const e of container.edges ?? []) {
       const es = edgeSpecMap.get(e.id);
       if (!es) continue;
       extractedEdgeIds.add(e.id);
+
+      const containerId = (e as ElkExtendedEdge & { container?: string }).container ?? container.id;
+      const baseOffset = containerOffsetMap.get(containerId) ?? { x: 0, y: 0 };
 
       const section = e.sections?.[0];
       if (section && spec.layout !== 'stress') {
